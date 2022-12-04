@@ -34,4 +34,11 @@ public class UserService {
 
         return "SUCCESS";
     }
+
+    public String login(String userName, String password) {
+
+        //기능추가
+
+        return "token 리턴";
+    }
 }
