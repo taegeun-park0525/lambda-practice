@@ -1,6 +1,8 @@
 package com.lambdapractice.service;
 
 import com.lambdapractice.domain.User;
+import com.lambdapractice.exception.AppException;
+import com.lambdapractice.exception.ErrorCode;
 import com.lambdapractice.repositroy.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,7 @@ public class UserService {
         //userName 중복 check
         userRepositroy.findByUserName(userName)
                 .ifPresent(user -> {
-                    throw new RuntimeException(userName + "는 이미 있습니다.");
+                    throw new AppException(ErrorCode.USERNAME_DUPLICATED, userName + "는 이미 있습니다.");
                 });
 
         // 저장 (나중에는 암호화해서 저장할것)
