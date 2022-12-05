@@ -4,7 +4,9 @@ import com.lambdapractice.domain.User;
 import com.lambdapractice.exception.AppException;
 import com.lambdapractice.exception.ErrorCode;
 import com.lambdapractice.repositroy.UserRepository;
+import com.lambdapractice.utils.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +17,9 @@ public class UserService {
     public final UserRepository userRepository;
     public final BCryptPasswordEncoder encoder;
 
-
+    @Value("${jwt.token.secret}")
+    private String key;
+    private long expiireTimeMs = 1000*60*60l;
     public String join(String userName, String password) {
 
         //userName 중복 check
@@ -37,8 +41,16 @@ public class UserService {
 
     public String login(String userName, String password) {
 
-        //기능추가
+        //userName없음
+        User selectedUser = userRepository.findByUserName(userName)
+                .orElseThrow(() -> new AppException(ErrorCode.USERNAME_NOT_FOUND, userName + "이 없습니다."));
+        //Password틀림
+        if(!encoder.matches(password, selectedUser.getPassword())) {
+            throw new AppException(ErrorCode.INVALID_PASSWORD, "패스워드를 잘못입력하셨습니다.");
+        }
 
-        return "token 리턴";
+        String token = JwtTokenUtil.createToken(selectedUser.getUserName(),key, expiireTimeMs   );
+
+        return token;
     }
 }

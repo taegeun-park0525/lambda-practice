@@ -14,6 +14,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 
@@ -37,6 +38,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("로그인 성공")
+    @WithMockUser
     void login_success() throws Exception {
         String userName = "Taegeun";
         String password = "password";
@@ -55,6 +57,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("로그인 실패 - Password틀림")
+    @WithMockUser
     void login_fail2() throws Exception {
         String userName = "Taegeun";
         String password = "password";
@@ -72,7 +75,7 @@ class UserControllerTest {
     }
     @Test
     @DisplayName("로그인 실패 - UserName_Not_Found")
-    @WithAnonymousUser
+    @WithMockUser
     void login_fail() throws Exception {
         String userName = "Taegeun";
         String password = "password";
@@ -92,7 +95,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("회원가입 실패 - userName 중복")
-    @WithAnonymousUser
+    @WithMockUser
     void join_fail() throws Exception {
         String userName = "Taegeun";
         String password = "password";
@@ -111,6 +114,7 @@ class UserControllerTest {
 
     @Test
     @DisplayName("회원가입 성공")
+    @WithMockUser
     void join() throws Exception {
         String userName = "Taegeun";
         String password = "password";

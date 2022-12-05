@@ -15,7 +15,11 @@ spring:
     hibernate:
       ddl-auto: update
 
+jwt:
+  token:
+    secret: "secretKey"
+
   # Swagger
   mvc:
-    pathmatch:
+    path match:
       matching-strategy: ant_path_matcher
